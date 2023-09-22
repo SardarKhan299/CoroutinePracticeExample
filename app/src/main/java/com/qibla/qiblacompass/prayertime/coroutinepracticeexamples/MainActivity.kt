@@ -15,7 +15,31 @@ class MainActivity : AppCompatActivity() {
         launchCoroutines()
         dependentCoroutines()
         jobHeirarchy()
+        asynAwaitExample()
     }
+
+
+    suspend fun fetchUserData(): String {
+        delay(1000) // Simulate fetching user data from a server
+        return "User Data"
+    }
+
+    suspend fun fetchProductData(): String {
+        delay(1500) // Simulate fetching product data from a server
+        return "Product Data"
+    }
+
+    fun asynAwaitExample() = runBlocking {
+        val userDeferred = async { fetchUserData() }
+        val productDeferred = async { fetchProductData() }
+
+        val userData = userDeferred.await()
+        val productData = productDeferred.await()
+
+        println("User data: $userData")
+        println("Product data: $productData")
+    }
+
 
     fun dependentCoroutines() {
         val job1 = GlobalScope.launch(start = CoroutineStart.LAZY) {
