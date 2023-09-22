@@ -12,9 +12,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        simpleCoroutine()
         main()
         launchCoroutines()
     }
+
+    private fun simpleCoroutine() {
+        GlobalScope.launch {
+            println("Hello coroutine!")
+            delay(500)
+            println("Right back at ya!")
+        }
+        Thread.sleep(1000)
+    }
+
 
     fun main() = runBlocking {
         val job = launch {
