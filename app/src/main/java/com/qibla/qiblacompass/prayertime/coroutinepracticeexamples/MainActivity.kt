@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         qiblatIndicator = findViewById(R.id.qibla_indicator)
         imageDial = findViewById(R.id.dial)
         tvAngle = findViewById(R.id.tv_angle)
+        tvDistance = findViewById(R.id.tv_distance)
         mLocationManager = MyLocationManager(this,locationCallback())
         setupCompass()
 
@@ -74,6 +76,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        mLocationManager.stopLocationTracking()
         compass?.stop()
     }
 
@@ -85,6 +88,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         Log.d(MainActivity::class.simpleName, "onStop: ")
+        mLocationManager.stopLocationTracking()
         compass?.stop()
     }
 
@@ -266,12 +270,28 @@ class MainActivity : AppCompatActivity() {
         val strYourLocation = (resources.getString(R.string.your_location)
                 + " " + myLat + ", " + myLng)
 
+
+
         //Toast.makeText(getApplicationContext(), "Lokasi anda: - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
         Log.d(MainActivity::class.simpleName, "fetch_GPS: $strYourLocation")
         val kaabaLng =
             39.826206 // ka'bah Position
         val kaabaLat =
             Math.toRadians(21.422487) // ka'bah Position
+
+        // Calculate Distance
+        val startPoint = Location("locationA")
+        startPoint.latitude = kaabaLat
+        startPoint.longitude = kaabaLng
+
+        val endPoint = Location("locationB")
+        endPoint.latitude = myLat
+        endPoint.longitude = myLng
+
+        val distance = startPoint.distanceTo(endPoint).toDouble()
+        tvDistance.text = convertMeterToKilometer(distance.toFloat()).toString() +" km"
+
+
         val myLatRad = Math.toRadians(myLat)
         val longDiff = Math.toRadians(kaabaLng - myLng)
         val y = Math.sin(longDiff) * Math.cos(kaabaLat)
@@ -302,6 +322,9 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    fun convertMeterToKilometer(meter: Float): Float {
+        return (meter * 0.001).toFloat()
+    }
 
     fun asynAwaitExample() = runBlocking {
         val userDeferred = async { fetchUserData() }
