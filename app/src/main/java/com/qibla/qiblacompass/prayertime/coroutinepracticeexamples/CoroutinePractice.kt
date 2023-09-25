@@ -31,7 +31,10 @@ class CoroutinePractice : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             task2()
         }
-
+        
+        //coroutineBuilders()
+        //asynAwaitExample1()
+        asynAwaitExample2()
 
 //        simpleCoroutine()
 //        main()
@@ -41,6 +44,63 @@ class CoroutinePractice : AppCompatActivity() {
 //        asynAwaitExample()
 
     }
+
+    private fun asynAwaitExample1() {
+        Log.d(CoroutinePractice::class.simpleName, "asynAwaitExample1: ")
+        CoroutineScope(Dispatchers.Main).launch {
+            // Async return the data type of last statement. //
+            val job = CoroutineScope(Dispatchers.IO).async {
+                getFollowers()
+            }
+            Log.d(CoroutinePractice::class.simpleName, "printFollowers: ${job.await()}")
+        }
+
+    }
+    private fun asynAwaitExample2() {
+        Log.d(CoroutinePractice::class.simpleName, "asynAwaitExample1: ")
+        CoroutineScope(Dispatchers.IO).launch {
+            // Async return the data type of last statement. //
+            val job = CoroutineScope(Dispatchers.IO).async {
+                getFollowers()
+            }
+            val job1 = CoroutineScope(Dispatchers.IO).async {
+                getInstaFollowers()
+            }
+            Log.d(CoroutinePractice::class.simpleName, "printFollowers: ${job.await()} ${job1.await()}")
+        }
+
+    }
+
+
+    private fun coroutineBuilders() {
+        Log.d(CoroutinePractice::class.simpleName, "coroutineBuilders: ")
+        CoroutineScope(Dispatchers.Main).launch {
+            printFollowers()
+        }
+
+    }
+
+    suspend fun printFollowers() {
+        Log.d(CoroutinePractice::class.simpleName, "printFollowers: ")
+        var fbFollower = 0
+        val job = CoroutineScope(Dispatchers.IO).launch {
+            fbFollower = getFollowers()
+        }
+        // join is used to wait for the coroutine to finish().
+        // coroutine is remain in the suspended state.
+        job.join()
+        Log.d(CoroutinePractice::class.simpleName, "printFollowers: $fbFollower")
+    }
+
+    suspend fun getFollowers():Int{
+        delay(1000)
+        return 100
+    }
+    suspend fun getInstaFollowers():Int{
+        delay(1000)
+        return 120
+    }
+
 
     suspend fun task1(){
         Log.d(CoroutinePractice::class.simpleName, "task1: Started")
