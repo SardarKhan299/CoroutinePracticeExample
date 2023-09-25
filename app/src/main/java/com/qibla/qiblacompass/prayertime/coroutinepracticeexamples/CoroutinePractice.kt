@@ -44,6 +44,7 @@ class CoroutinePractice : AppCompatActivity() {
 
     suspend fun task1(){
         Log.d(CoroutinePractice::class.simpleName, "task1: Started")
+        // its a suspention point for coroutine..//
        yield()
         Log.d(CoroutinePractice::class.simpleName, "task1: End")
     }
