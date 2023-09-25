@@ -15,8 +15,6 @@ class MyLocationManager(
 
     private var request: LocationRequest
     private var locationClient: FusedLocationProviderClient
-    private var lattitude:Double = 0.0
-    private var longitude:Double = 0.0
 
     init {
         // getting the location client
