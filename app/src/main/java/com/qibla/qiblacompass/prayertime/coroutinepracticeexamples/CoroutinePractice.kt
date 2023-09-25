@@ -23,6 +23,15 @@ class CoroutinePractice : AppCompatActivity() {
             }
         }
 
+        // Suspention Test..//
+        CoroutineScope(Dispatchers.Main).launch {
+            task1()
+        }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            task2()
+        }
+
 
 //        simpleCoroutine()
 //        main()
@@ -31,6 +40,18 @@ class CoroutinePractice : AppCompatActivity() {
 //        jobHeirarchy()
 //        asynAwaitExample()
 
+    }
+
+    suspend fun task1(){
+        Log.d(CoroutinePractice::class.simpleName, "task1: Started")
+       yield()
+        Log.d(CoroutinePractice::class.simpleName, "task1: End")
+    }
+
+    suspend fun task2(){
+        Log.d(CoroutinePractice::class.simpleName, "task2: Started")
+        yield()
+        Log.d(CoroutinePractice::class.simpleName, "task2: End")
     }
 
 
