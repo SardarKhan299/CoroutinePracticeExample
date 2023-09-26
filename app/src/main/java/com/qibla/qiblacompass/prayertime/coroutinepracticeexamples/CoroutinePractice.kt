@@ -34,7 +34,8 @@ class CoroutinePractice : AppCompatActivity() {
         
         //coroutineBuilders()
         //asynAwaitExample1()
-        asynAwaitExample2()
+        //asynAwaitExample2()
+        coroutineHierarchy()
 
 //        simpleCoroutine()
 //        main()
@@ -43,6 +44,32 @@ class CoroutinePractice : AppCompatActivity() {
 //        jobHeirarchy()
 //        asynAwaitExample()
 
+    }
+
+    private fun coroutineHierarchy() {
+        Log.d(CoroutinePractice::class.simpleName, "coroutineHierarchy: ")
+        CoroutineScope(Dispatchers.Main).launch {
+            executeWork()
+        }
+    }
+
+    private suspend fun executeWork() {
+        Log.d(CoroutinePractice::class.simpleName, "executeWork: ")
+        val parentJob = GlobalScope.launch(Dispatchers.Main){
+            Log.d(CoroutinePractice::class.simpleName, "executeWork:Parent Started $coroutineContext")
+            val childJob = launch(Dispatchers.IO) {
+                Log.d(CoroutinePractice::class.simpleName, "executeWork:Child Started $coroutineContext")
+                delay(3000)
+                Log.d(CoroutinePractice::class.simpleName, "executeWork: Child Ended")
+            }
+
+            delay(2000)
+            Log.d(CoroutinePractice::class.simpleName, "executeWork: Parent Ended")
+
+        }
+        // parent Job wait for the Child Jobs to Complete and then its completed..//
+        parentJob.join()
+        Log.d(CoroutinePractice::class.simpleName, "executeWork: Parent Completed")
     }
 
     private fun asynAwaitExample1() {
