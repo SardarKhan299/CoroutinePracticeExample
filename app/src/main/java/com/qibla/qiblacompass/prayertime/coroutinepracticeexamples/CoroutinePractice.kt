@@ -24,18 +24,19 @@ class CoroutinePractice : AppCompatActivity() {
         }
 
         // Suspention Test..//
-        CoroutineScope(Dispatchers.Main).launch {
-            task1()
-        }
-
-        CoroutineScope(Dispatchers.Main).launch {
-            task2()
-        }
+//        CoroutineScope(Dispatchers.Main).launch {
+//            task1()
+//        }
+//
+//        CoroutineScope(Dispatchers.Main).launch {
+//            task2()
+//        }
         
         //coroutineBuilders()
         //asynAwaitExample1()
         //asynAwaitExample2()
-        coroutineHierarchy()
+        //coroutineHierarchy()
+        coroutineCancellation()
 
 //        simpleCoroutine()
 //        main()
@@ -44,6 +45,36 @@ class CoroutinePractice : AppCompatActivity() {
 //        jobHeirarchy()
 //        asynAwaitExample()
 
+    }
+
+    private fun coroutineCancellation() {
+        Log.d(CoroutinePractice::class.simpleName, "coroutineCancellation: ")
+        CoroutineScope(Dispatchers.IO).launch {
+            executeTask()
+        }
+    }
+
+    private suspend fun executeTask() {
+        Log.d(CoroutinePractice::class.simpleName, "executeTask: ")
+        val parentJob = CoroutineScope(Dispatchers.IO).launch {
+            for(i in 0..1000) {
+                if(isActive) {
+                    executeLongRunningTask()
+                    Log.d(CoroutinePractice::class.simpleName, "executeTask: $i")
+                }
+            }
+        }
+        delay(100)
+        Log.d(CoroutinePractice::class.simpleName, "executeTask: Canceling parent job")
+        parentJob.cancel()
+        parentJob.join()
+        Log.d(CoroutinePractice::class.simpleName, "executeTask: parent Completed..")
+    }
+
+    private fun executeLongRunningTask(){
+        for(i in 0..100000000){
+
+        }
     }
 
     private fun coroutineHierarchy() {
