@@ -67,6 +67,9 @@ class CoroutinePractice : AppCompatActivity() {
             Log.d(CoroutinePractice::class.simpleName, "executeWork: Parent Ended")
 
         }
+        delay(1000)
+        // parent job and its child jobs are cancelled. ///
+        parentJob.cancel()
         // parent Job wait for the Child Jobs to Complete and then its completed..//
         parentJob.join()
         Log.d(CoroutinePractice::class.simpleName, "executeWork: Parent Completed")
