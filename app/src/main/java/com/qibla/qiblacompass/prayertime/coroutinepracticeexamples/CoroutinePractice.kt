@@ -36,7 +36,8 @@ class CoroutinePractice : AppCompatActivity() {
         //asynAwaitExample1()
         //asynAwaitExample2()
         //coroutineHierarchy()
-        coroutineCancellation()
+        //coroutineCancellation()
+        withContextExample()
 
 //        simpleCoroutine()
 //        main()
@@ -45,6 +46,29 @@ class CoroutinePractice : AppCompatActivity() {
 //        jobHeirarchy()
 //        asynAwaitExample()
 
+    }
+
+    private fun withContextExample() {
+        Log.d(CoroutinePractice::class.simpleName, "withContextExample: ")
+        GlobalScope.launch {
+            executeTaskWithContext()
+        }
+
+    }
+
+    private suspend fun executeTaskWithContext() {
+        Log.d(CoroutinePractice::class.simpleName, "executeTaskWithContext: Before")
+        GlobalScope.launch {
+            Log.d(CoroutinePractice::class.simpleName, "executeTaskWithContext: inside")
+        }
+        Log.d(CoroutinePractice::class.simpleName, "executeTaskWithContext: After")
+        // Now same Example with withContext ..//
+        Log.d(CoroutinePractice::class.simpleName, "executeTaskWithContext: Before WithContext")
+        // coroutine will be suspended and next line will not execute before its finished..//
+        withContext(Dispatchers.IO) {
+            Log.d(CoroutinePractice::class.simpleName, "executeTaskWithContext: inside WithContext")
+        }
+        Log.d(CoroutinePractice::class.simpleName, "executeTaskWithContext: After WithContext")
     }
 
     private fun coroutineCancellation() {
@@ -150,7 +174,7 @@ class CoroutinePractice : AppCompatActivity() {
         // join is used to wait for the coroutine to finish().
         // coroutine is remain in the suspended state.
         job.join()
-        Log.d(CoroutinePractice::class.simpleName, "printFollowers: $fbFollower")
+        Log.d(CoroutinePractice::class.simpleName, "printFollowers: $fbFollower ${job.job}")
     }
 
     suspend fun getFollowers():Int{
