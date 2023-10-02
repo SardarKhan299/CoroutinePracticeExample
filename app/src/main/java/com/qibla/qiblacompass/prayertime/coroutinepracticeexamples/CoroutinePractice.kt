@@ -1,5 +1,6 @@
 package com.qibla.qiblacompass.prayertime.coroutinepracticeexamples
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ class CoroutinePractice : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coroutine_practice)
+        startActivity(Intent(this,ChannelPractice::class.java))
 
         findViewById<Button>(R.id.btn_counter).setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
@@ -42,10 +44,6 @@ class CoroutinePractice : AppCompatActivity() {
         //coroutineCancellation()
         //withContextExample()
 
-        //sequencePractice()
-        //channelPractice()
-        channelProducerConsumer()
-
 //        simpleCoroutine()
 //        main()
 //        launchCoroutines()
@@ -55,86 +53,7 @@ class CoroutinePractice : AppCompatActivity() {
 
     }
 
-    private fun channelProducerConsumer() {
-        Log.d(CoroutinePractice::class.simpleName, "channelProducerConsumer: ")
-        val fruitArray = arrayOf("Apple", "Banana", "Pear", "Grapes",
-            "Strawberry")
-        fun produceFruits() = GlobalScope.produce<String> {
-            for (fruit in fruitArray) {
-                send(fruit)
-                // Conditional close
-                if (fruit == "Pear") {
-                    // Signal that closure of channel
-                    close()
-                }
-            }
-        }
-        runBlocking {
-            val fruits = produceFruits()
-            fruits.consumeEach { println(it) }
-            println("Done!")
-        }
-    }
 
-    private fun channelPractice() {
-        Log.d(CoroutinePractice::class.simpleName, "channelPractice: ")
-        val fruits = listOf("Apple","Orange","Grapes","Banana","Watermelon")
-        val kotlinChannel = Channel<String>()
-
-        runBlocking {
-            GlobalScope.launch {
-                for(fruit in fruits){
-                    if(!kotlinChannel.isClosedForSend){
-                        kotlinChannel.send(fruit)
-                    }
-                    if(fruit == "Banana"){
-                        kotlinChannel.close()
-                    }
-                }
-            }
-
-            for (fruit in kotlinChannel){
-                println(fruit)
-            }
-            println("Done")
-        }
-
-    }
-
-    private fun sequencePractice() {
-        Log.d(CoroutinePractice::class.simpleName, "sequencePractice: ")
-            // 1
-            val sequence = multipleValuesSequence()
-            // 2
-            sequence.forEach {
-                println(it)
-            }
-
-    }
-
-    // 3
-    // it will print one value at a time.
-    fun singleValueExample() = sequence {
-        // 4
-        println("Printing first value")
-        // 5
-        yield("Apple")
-        // 6
-        println("Printing second value")
-        // 7
-        yield("Orange")
-        // 8
-        println("Printing third value")
-        // 9
-        yield("Banana")
-    }
-
-    // it will print all values at a time.
-    fun multipleValuesSequence() = sequence {
-        // 4
-        println("Printing All values.")
-        yieldAll(1..10)
-    }
 
     private fun withContextExample() {
         Log.d(CoroutinePractice::class.simpleName, "withContextExample: ")
