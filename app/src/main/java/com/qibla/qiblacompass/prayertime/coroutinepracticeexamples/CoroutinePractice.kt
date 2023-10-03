@@ -14,7 +14,7 @@ class CoroutinePractice : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coroutine_practice)
-        startActivity(Intent(this,ChannelPractice::class.java))
+        //startActivity(Intent(this,ChannelPractice::class.java))
 
         findViewById<Button>(R.id.btn_counter).setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
@@ -37,7 +37,7 @@ class CoroutinePractice : AppCompatActivity() {
 //            task2()
 //        }
         
-        //coroutineBuilders()
+        coroutineBuilders()
         //asynAwaitExample1()
         //asynAwaitExample2()
         //coroutineHierarchy()
@@ -45,7 +45,7 @@ class CoroutinePractice : AppCompatActivity() {
         //withContextExample()
 
 //        simpleCoroutine()
-//        main()
+          //main()
 //        launchCoroutines()
 //        dependentCoroutines()
 //        jobHeirarchy()
@@ -144,6 +144,7 @@ class CoroutinePractice : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             // Async return the data type of last statement. //
             val job = CoroutineScope(Dispatchers.IO).async {
+                Log.d(CoroutinePractice::class.simpleName, "asynAwaitExample1: Started")
                 getFollowers()
             }
             Log.d(CoroutinePractice::class.simpleName, "printFollowers: ${job.await()}")
@@ -160,38 +161,51 @@ class CoroutinePractice : AppCompatActivity() {
             val job1 = CoroutineScope(Dispatchers.IO).async {
                 getInstaFollowers()
             }
-            Log.d(CoroutinePractice::class.simpleName, "printFollowers: ${job.await()} ${job1.await()}")
+            Log.d(CoroutinePractice::class.simpleName, "asynAwaitExample2: ${job1.await()}")
+            Log.d(CoroutinePractice::class.simpleName, "printFollowers: ${job.await()} ")
         }
 
     }
 
 
     private fun coroutineBuilders() {
-        Log.d(CoroutinePractice::class.simpleName, "coroutineBuilders: ")
+        Log.d(CoroutinePractice::class.simpleName, "coroutineBuilders: Start")
         CoroutineScope(Dispatchers.Main).launch {
+            Log.d(CoroutinePractice::class.simpleName, "coroutineBuilders: Print Followers")
             printFollowers()
         }
+        Log.d(CoroutinePractice::class.simpleName, "coroutineBuilders: End")
 
     }
 
     suspend fun printFollowers() {
         Log.d(CoroutinePractice::class.simpleName, "printFollowers: ")
         var fbFollower = 0
+        var instaFollower = 0
         val job = CoroutineScope(Dispatchers.IO).launch {
             fbFollower = getFollowers()
+        }
+
+        val job1 = CoroutineScope(Dispatchers.IO).launch {
+            instaFollower = getInstaFollowers()
         }
         // join is used to wait for the coroutine to finish().
         // coroutine is remain in the suspended state.
         job.join()
-        Log.d(CoroutinePractice::class.simpleName, "printFollowers: $fbFollower ${job.job}")
+        job1.join()
+        Log.d(CoroutinePractice::class.simpleName, "instaFollower: $instaFollower ${job1.job}")
+        Log.d(CoroutinePractice::class.simpleName, "fbFollower: $fbFollower ${job.job}")
+        Log.d(CoroutinePractice::class.simpleName, "printFollowers: End")
     }
 
     suspend fun getFollowers():Int{
+        Log.d(CoroutinePractice::class.simpleName, "getFollowers: ")
         delay(1000)
         return 100
     }
     suspend fun getInstaFollowers():Int{
-        delay(1000)
+        Log.d(CoroutinePractice::class.simpleName, "getInstaFollowers: ")
+        delay(1500)
         return 120
     }
 
@@ -232,19 +246,23 @@ class CoroutinePractice : AppCompatActivity() {
     }
 
 
-    fun dependentCoroutines() {
+    fun dependentCoroutines() = runBlocking {
         val job1 = GlobalScope.launch(start = CoroutineStart.LAZY) {
+            Log.d(CoroutinePractice::class.simpleName, "dependentCoroutines: job1 Started")
             delay(200)
             println("Pong")
             delay(200)
         }
         GlobalScope.launch {
+            Log.d(CoroutinePractice::class.simpleName, "dependentCoroutines: job2 Started")
             delay(200)
             println("Ping")
+            Log.d(CoroutinePractice::class.simpleName, "dependentCoroutines: job1 join")
             job1.join()
             println("Ping")
             delay(200)
         }
+        Log.d(CoroutinePractice::class.simpleName, "dependentCoroutines: End")
         Thread.sleep(1000)
     }
 
@@ -259,11 +277,21 @@ class CoroutinePractice : AppCompatActivity() {
 
 
     fun main() = runBlocking {
+        Log.d(CoroutinePractice::class.simpleName, "main: ")
         val job = launch {
-            delay(1000)
+            repeat(10){
+                Log.d(CoroutinePractice::class.simpleName, "main: $it")
+                delay(100)
+            }
             Log.d(MainActivity::class.simpleName, "main: Hello From Coroutine...")
         }
+        Log.d(CoroutinePractice::class.simpleName, "main: delay")
+        delay(600)
+        Log.d(CoroutinePractice::class.simpleName, "main: cancel")
+        job.cancel()
+        Log.d(CoroutinePractice::class.simpleName, "main: join")
         job.join()
+        Log.d(CoroutinePractice::class.simpleName, "main: End")
     }
 
     fun launchCoroutines() {
