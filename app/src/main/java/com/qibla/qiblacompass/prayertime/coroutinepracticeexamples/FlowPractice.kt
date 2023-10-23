@@ -17,8 +17,10 @@ class FlowPractice:AppCompatActivity() {
 
         GlobalScope.launch {
             val data:Flow<Int> = producer().onStart {
+                emit(-1)
                 Log.d(FlowPractice::class.simpleName, "onCreate: Flow Started Emitting")
             }.onCompletion {
+                emit(100)
                 Log.d(FlowPractice::class.simpleName, "onCreate: Flow Completed")
                 }
                 .onEach {
