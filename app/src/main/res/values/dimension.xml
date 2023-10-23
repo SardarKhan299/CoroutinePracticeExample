@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="dial">250dp</dimen>
-    <dimen name="qibla">400dp</dimen>
+    <dimen name="qibla">300dp</dimen>
     <dimen name="bottom_image">180dp</dimen>
 
 </resources>

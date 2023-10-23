@@ -17,7 +17,7 @@
             android:layout_height="@dimen/dial"
             android:layout_centerInParent="true"
             android:contentDescription="@string/compass_dial"
-            android:src="@drawable/dial"
+            app:srcCompat="@drawable/compass"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

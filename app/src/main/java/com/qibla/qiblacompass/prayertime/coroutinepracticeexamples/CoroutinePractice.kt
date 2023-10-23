@@ -283,7 +283,7 @@ class CoroutinePractice : AppCompatActivity() {
                 Log.d(CoroutinePractice::class.simpleName, "main: $it")
                 delay(100)
             }
-            Log.d(MainActivity::class.simpleName, "main: Hello From Coroutine...")
+            Log.d(CoroutinePractice::class.simpleName, "main: Hello From Coroutine...")
         }
         Log.d(CoroutinePractice::class.simpleName, "main: delay")
         delay(600)

@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             0.5f
         )
         currentAzimuth = azimuth
-        an.duration = 500
+        an.duration = 60
         an.repeatCount = 0
         an.fillAfter = true
         imageDial!!.startAnimation(an)
@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
             0.5f
         )
         currentAzimuth = azimuth
-        an.duration = 500
+        an.duration = 60
         an.repeatCount = 0
         an.fillAfter = true
         qiblatIndicator!!.startAnimation(an)
