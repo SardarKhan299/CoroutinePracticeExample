@@ -16,6 +16,19 @@ class FlowPractice:AppCompatActivity() {
         // Flow Operator Practice. //
 
         GlobalScope.launch {
+            producer().map {
+                it*2
+            }.filter {
+                it>4
+            }.collect{
+                Log.d(FlowPractice::class.simpleName, "onCreate: Value is $it")
+            }
+
+        }
+
+        GlobalScope.launch {
+            val firstElement = producer().first()
+            Log.d(FlowPractice::class.simpleName, "onCreate: First Element of the Flow..")
             val data:Flow<Int> = producer().onStart {
                 emit(-1)
                 Log.d(FlowPractice::class.simpleName, "onCreate: Flow Started Emitting")
@@ -26,6 +39,7 @@ class FlowPractice:AppCompatActivity() {
                 .onEach {
                     Log.d(FlowPractice::class.simpleName, "onCreate: New Item Emitted..")
                 }
+
             delay(3000)
             data.collect{
                 Log.d(FlowPractice::class.simpleName, "onCreate: Consumer2 $it")
@@ -48,6 +62,11 @@ class FlowPractice:AppCompatActivity() {
             }
 
         }
+
+
+
+
+
 //        flowOfString = flow<String> {
 //            for(i in 0..100){
 //                emit("Emiting: $i")
