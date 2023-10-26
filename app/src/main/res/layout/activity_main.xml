@@ -14,16 +14,31 @@
         <ImageView
             android:id="@+id/dial"
             android:layout_width="@dimen/dial"
-            android:layout_height="@dimen/dial"
+            android:layout_height="240dp"
             android:layout_centerInParent="true"
             android:contentDescription="@string/compass_dial"
-            app:srcCompat="@drawable/compass"
+            app:srcCompat="@drawable/dial_new"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
+
+        <ImageView
+            android:id="@+id/needle"
+            android:layout_width="40dp"
+            android:layout_height="170dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/compass_dial"
+            app:srcCompat="@drawable/needle_new"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
 
         <ImageView
             android:id="@+id/qibla_indicator"
@@ -33,7 +48,7 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/compass_hands"
             android:scaleType="fitXY"
-            android:src="@drawable/qibla"
+            android:src="@drawable/qibla_new"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +63,19 @@
             app:layout_constraintTop_toBottomOf="@+id/qibla_indicator"
             tools:text="Distance "
             android:layout_marginStart="8dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_indication"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/qibla_indicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Reached"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:textSize="20sp"
             />
 
         <TextView

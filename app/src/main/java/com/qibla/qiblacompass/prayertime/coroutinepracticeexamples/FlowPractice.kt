@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlin.math.log
 
 class FlowPractice:AppCompatActivity() {
     var flowOfString : Flow<String>? = null
@@ -14,6 +15,23 @@ class FlowPractice:AppCompatActivity() {
         setContentView(R.layout.activity_channel_practice)
 
         // Flow Operator Practice. //
+
+        // Producer..//
+        val myFlow = flow {
+            emit("hello world.")
+            for(i in 1..10){
+                emit("New value is $i")
+                delay(1000)
+            }
+        }
+
+        // consumer...//
+        GlobalScope.launch(Dispatchers.IO){
+            myFlow.buffer().collect{
+                Log.d(FlowPractice::class.simpleName, "onCreate Flow: $it Thread is ${Thread.currentThread().name}")
+                delay(2000)
+            }
+        }
 
         GlobalScope.launch {
             producer().map {

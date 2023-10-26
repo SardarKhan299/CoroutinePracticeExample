@@ -3,6 +3,7 @@ package com.qibla.qiblacompass.prayertime.coroutinepracticeexamples
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -33,8 +34,12 @@ class MainActivity : AppCompatActivity() {
     private var compass: Compass? = null
     private var qiblatIndicator: ImageView? = null
     private var imageDial: ImageView? = null
+    private var imageNeedle: ImageView? = null
     private lateinit var tvDistance:TextView
     private lateinit var tvAngle:TextView
+    private lateinit var tvIndication:TextView
+
+    private var qiblaAngel:Double = 0.0
 
     private lateinit var mLocationManager:MyLocationManager
 
@@ -54,7 +59,9 @@ class MainActivity : AppCompatActivity() {
         //////////////////////////////////////////
         qiblatIndicator = findViewById(R.id.qibla_indicator)
         imageDial = findViewById(R.id.dial)
+        imageNeedle = findViewById(R.id.needle)
         tvAngle = findViewById(R.id.tv_angle)
+        tvIndication = findViewById(R.id.tv_indication)
         tvDistance = findViewById(R.id.tv_distance)
         mLocationManager = MyLocationManager(this,locationCallback())
         setupCompass()
@@ -114,7 +121,6 @@ class MainActivity : AppCompatActivity() {
 
 
     fun adjustGambarDial(azimuth: Float) {
-        // Log.d(TAG, "will set rotation from " + currentAzimuth + " to "                + azimuth);
         val an: Animation = RotateAnimation(
             -currentAzimuth, -azimuth,
             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
@@ -125,10 +131,24 @@ class MainActivity : AppCompatActivity() {
         an.repeatCount = 0
         an.fillAfter = true
         imageDial!!.startAnimation(an)
+        if((qiblaAngel - 30.0)<=currentAzimuth && (qiblaAngel + 30.0)>=currentAzimuth){
+            tvIndication.visibility = View.VISIBLE
+            if((qiblaAngel - 3.0)<=currentAzimuth && (qiblaAngel + 3.0)>=currentAzimuth){
+                Log.d(MainActivity::class.simpleName, "adjustGambarDial: Reached")
+                tvIndication.text = "Reached"
+            }else{
+                tvIndication.text = "Almost There"
+            }
+
+            Log.d(MainActivity::class.simpleName, "adjustGambarDial: Almost There $currentAzimuth")
+        }else{
+            tvIndication.visibility = View.GONE
+        }
+        //imageNeedle!!.startAnimation(an)
     }
 
     fun adjustArrowQiblat(azimuth: Float) {
-        //Log.d(TAG, "will set rotation from " + currentAzimuth + " to "                + azimuth);
+        //Log.d(TAG, "will set rotation from $currentAzimuth to $azimuth");
         val kiblat_derajat = GetFloat("kiblat_derajat")
         val an: Animation = RotateAnimation(
             -currentAzimuth + kiblat_derajat, -azimuth,
@@ -281,12 +301,10 @@ class MainActivity : AppCompatActivity() {
         val myLatRad = Math.toRadians(myLat)
         val longDiff = Math.toRadians(kaabaLng - myLng)
         val y = Math.sin(longDiff) * Math.cos(kaabaLat)
-        val x =
-            Math.cos(myLatRad) * Math.sin(kaabaLat) - Math.sin(myLatRad) * Math.cos(kaabaLat) * Math.cos(
-                longDiff
-            )
+        val x = Math.cos(myLatRad) * Math.sin(kaabaLat) - Math.sin(myLatRad) * Math.cos(kaabaLat) * Math.cos(longDiff)
         result = (Math.toDegrees(Math.atan2(y, x)) + 360) % 360
         Log.d(MainActivity::class.simpleName, "fetch_GPS: $result")
+        qiblaAngel = result
         SaveFloat("kiblat_derajat", result.toFloat())
 
         val strKaabaDirection: String =
