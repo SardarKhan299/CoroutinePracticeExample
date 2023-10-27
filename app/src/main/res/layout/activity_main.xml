@@ -10,6 +10,34 @@
     android:orientation="vertical"
     xmlns:custom="http://schemas.android.com/apk/res-auto">
 
+        <ImageView
+            android:id="@+id/qibla_indicator"
+            android:layout_width="@dimen/qibla"
+            android:layout_height="330dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/compass_hands"
+            android:scaleType="fitXY"
+            android:src="@drawable/qibla_new"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/bg_shade"
+            android:layout_width="@dimen/qibla"
+            android:layout_height="285dp"
+            android:contentDescription="@string/compass_hands"
+            android:scaleType="fitXY"
+            android:src="@drawable/shade_green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <ImageView
             android:id="@+id/dial"
@@ -40,20 +68,6 @@
             />
 
 
-        <ImageView
-            android:id="@+id/qibla_indicator"
-            android:layout_width="@dimen/qibla"
-            android:layout_height="@dimen/qibla"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/compass_hands"
-            android:scaleType="fitXY"
-            android:src="@drawable/qibla_new"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
