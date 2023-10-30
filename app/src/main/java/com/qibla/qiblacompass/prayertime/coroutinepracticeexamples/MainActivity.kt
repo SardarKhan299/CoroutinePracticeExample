@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private var qiblatIndicator: ImageView? = null
     private var imageDial: ImageView? = null
     private var imageNeedle: ImageView? = null
+    private var bgShade: ImageView? = null
     private lateinit var tvDistance:TextView
     private lateinit var tvAngle:TextView
     private lateinit var tvIndication:TextView
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         qiblatIndicator = findViewById(R.id.qibla_indicator)
         imageDial = findViewById(R.id.dial)
         imageNeedle = findViewById(R.id.needle)
+        bgShade = findViewById(R.id.bg_shade)
         tvAngle = findViewById(R.id.tv_angle)
         tvIndication = findViewById(R.id.tv_indication)
         tvDistance = findViewById(R.id.tv_distance)
@@ -136,13 +138,18 @@ class MainActivity : AppCompatActivity() {
             if((qiblaAngel - 3.0)<=currentAzimuth && (qiblaAngel + 3.0)>=currentAzimuth){
                 Log.d(MainActivity::class.simpleName, "adjustGambarDial: Reached")
                 tvIndication.text = "Reached"
+                bgShade?.setImageDrawable(getDrawable(R.drawable.shade_green))
             }else{
                 tvIndication.text = "Almost There"
+                bgShade?.setImageDrawable(getDrawable(R.drawable.shade_yellow))
             }
 
             Log.d(MainActivity::class.simpleName, "adjustGambarDial: Almost There $currentAzimuth")
-        }else{
+        }else if ((qiblaAngel - 80.0)<=currentAzimuth && (qiblaAngel + 80.0)>=currentAzimuth){
+            bgShade?.setImageDrawable(getDrawable(R.drawable.shade_orange))
             tvIndication.visibility = View.GONE
+        }else{
+            bgShade?.setImageDrawable(getDrawable(R.drawable.shade_red))
         }
         //imageNeedle!!.startAnimation(an)
     }
